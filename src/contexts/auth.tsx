@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import api from '../services/api'
 
 interface User {
@@ -17,22 +17,37 @@ interface Login {
 
 interface AuthContextData {
   signed: boolean,
-  user: User,
-  signIn({email, password}: Login): void
+  user: User | null | undefined,
+  signIn({email, password}: Login): Promise<boolean>
   signOut(): void
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
-  const [user, setUser] = useState<object | null>(null);
+  const [user, setUser] = useState<User | null | undefined>(null);
 
-  function signIn({email, password} : Login): void {
-    api.post('/users', {email, password}).then((response) => {
-      setUser(response.data)
-    }).catch((error) => {
-      alert(error.response.data.message)
-    });
+  useEffect(() => {
+    const user: any = localStorage.getItem('@conncare/user')
+
+    if (user !== null){
+      setUser(() => user)
+    }
+  }, [])
+
+  async function signIn({email, password} : Login): Promise<boolean> {
+
+    try {
+      const login = await api.post('/users', {email, password});
+      setUser(() => login.data);
+      localStorage.setItem('@conncare/user', login.data)
+      return true
+
+    } catch(error: any) {
+      alert(error.response.data.message);
+      return false
+    }
+
   }
 
   function signOut(): void {
@@ -40,7 +55,7 @@ export const AuthProvider: React.FC = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{ signed: !!user, user: {id: '', image_url: '', name: '', email: '', password: '', is_medic: false}, signIn, signOut }}>
+    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

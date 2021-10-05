@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import AuthContext from '../../contexts/auth'
 
@@ -11,17 +11,23 @@ function App() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const history = useHistory()
 
-  function handleLogin(event: any) {
+  async function handleLogin(event: any) {
     event.preventDefault()
 
-    signIn({email, password})
+    const signed = await signIn({email, password})
+
+    if (signed) {
+      history.push('/')
+      window.location.reload()
+    }
   }
 
   return (
     <div className="container-fluid gradient-custom p-5 mt-5" style={{height: '100vh'}}>
 
-    <h1 className="text-center text-light  px-5 mt-5">Entrar em sua conta</h1>
+    <h1 className="text-center text-light px-5 mt-5">Entrar em sua conta</h1>
 
     <div className="container-sign text-right p-5 bg-light rounded my-5" >
 
@@ -31,13 +37,13 @@ function App() {
 
         {/* <!-- Email input --> */}
         <div className="form-outline mb-4">
-          <input type="email" className="form-control p-2" value={email} onChange={event => setEmail(event.target.value)}/>
+          <input required type="email" className="form-control p-2" value={email} onChange={event => setEmail(event.target.value)}/>
           <label className="form-label">Email</label>
         </div>
 
         {/* <!-- Password input --> */}
         <div className="form-outline mb-4">
-          <input type="password" className="form-control p-2" value={password} onChange={event => setPassword(event.target.value)}/>
+          <input required type="password" className="form-control p-2" value={password} onChange={event => setPassword(event.target.value)}/>
           <label className="form-label" >Senha</label>
 
         </div>

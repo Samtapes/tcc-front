@@ -1,0 +1,84 @@
+.button {
+  background-color: #0166DA;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 3px;
+  width: 130px;
+}
+
+.last-row {
+  margin-top: 15px;
+}
+
+.medic-card {
+  border-radius: 200px !important;
+}
+
+
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #37ecba;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to left, rgba(55, 236, 186, 1), rgba(114, 175, 211, 1));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to left, rgba(55, 236, 186, 1), rgba(114, 175, 211, 1));
+}
+
+
+
+.branco{
+    background-color: #ffffff;
+}
+
+.agendartamanho{
+    height: 1vh;
+}
+
+.meio-verde{
+    margin-top: -10vh!important;
+}
+
+.hr-vertical{
+
+    border:none;
+    border-left:1px solid hsla(200, 10%, 50%,100);
+    height:22vh;
+    width:1px;
+}
+
+.hr-vertical-historico{
+    border:none;
+    border-left:1px solid hsla(200, 10%, 50%,100);
+    height:15vh;
+    width:1px;
+}
+
+.btn-light{
+  background: #ffffff!important;
+  color: #00EDBC!important;
+}
+
+.btn-saibamais{
+    color:#00C5DD;
+}
+
+.bg-gray{
+    background: #F5F5F5;
+}
+
+@media only screen and (max-width: 600px) {
+  .div-tamanho{
+    height: 100vh;
+}
+
+    .meio-verde{
+    margin-top: -40vh!important;
+}
+
+.tamanhoagendar{
+    height: 0vh;
+}
+}

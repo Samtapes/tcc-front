@@ -7,7 +7,9 @@ import {
 
 import Login from '../pages/Login'
 import Navbar from '../pages/navbar'
-import Register from '../pages/Register';
+import Register from '../pages/Register_patient';
+import RegisterMedic from '../pages/Register_medic';
+import IndexAuth from '../pages/index_auth';
 
 export default function AuthRoutes() {
   return (
@@ -15,10 +17,16 @@ export default function AuthRoutes() {
       <Navbar/>
       <Switch>
         <Route exact path="/">
+          <IndexAuth/>
+        </Route>
+        <Route exact path="/login">
           <Login/>
         </Route>
         <Route path="/cadastro-paciente">
           <Register/>
+        </Route>
+        <Route path="/cadastro-medico">
+          <RegisterMedic/>
         </Route>
       </Switch>
     </Router>
