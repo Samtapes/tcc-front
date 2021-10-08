@@ -11,6 +11,7 @@ import Navbar from '../pages/navbar'
 import ErrorPage from '../pages/error';
 import AgendarConfirmar from '../pages/agendar_confirmar';
 import Agendar from '../pages/agendar';
+import Consultas from '../pages/consultas';
 
 
 export default function AppRoutes() {
@@ -26,6 +27,9 @@ export default function AppRoutes() {
         </Route>
         <Route path="/agendar">
           <Agendar/>
+        </Route>
+        <Route path="/consultas">
+          <Consultas/>
         </Route>
         <Route path="/">
           <ErrorPage/>

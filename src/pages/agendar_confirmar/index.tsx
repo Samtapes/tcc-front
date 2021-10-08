@@ -2,6 +2,9 @@ import React from 'react';
 
 import {Link, useHistory} from 'react-router-dom';
 
+import MinhaFoto from '../../static/images/minha_foto.jpg'
+import Clock from '../../static/images/clock.svg'
+
 export default function AgendarConfirmar() {
 
   const history = useHistory()
@@ -48,7 +51,7 @@ export default function AgendarConfirmar() {
               <div className="row ">
 
                 <div className="col-4">
-                  <img className="rounded " src="{% static 'images/minha_foto.jpg' %}" alt="" height="70"/>
+                  <img className="rounded " src={MinhaFoto} alt="" height="70"/>
                 </div>
 
                 <div className="col-8">
@@ -57,7 +60,7 @@ export default function AgendarConfirmar() {
                 </div>
               </div>
               
-              <p className="m-0 p-0 my-4 text-black-50 mt-3"><img className="rounded " src="{% static 'images/clock.svg' %}" alt="" height="30"/> 07 de Maio, 14:00</p>
+              <p className="m-0 p-0 my-4 text-black-50 mt-3"><img className="rounded " src={Clock} alt="" height="30"/> 07 de Maio, 14:00</p>
               <p className="m-0 p-0 my-4 text-black-50">Transfêrencia Bancária</p>
               <p className="m-0 p-0 text-black-50">R$ 250</p>
             </div>
