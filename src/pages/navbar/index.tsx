@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom' 
+import { Link, useHistory } from 'react-router-dom' 
 import logo from '../../static/images/logo.svg'
 import Dropdown from 'react-bootstrap/Dropdown';
 import AuthContext from '../../contexts/auth';
@@ -7,7 +7,14 @@ import AuthContext from '../../contexts/auth';
 export default function Navbar(){
 
   const {signed, signOut} = useContext(AuthContext);
-  
+  const history = useHistory();
+
+  function handleSignOut(){
+    signOut()
+    history.push('/')
+    window.location.reload()
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar gradient-custom fixed-top text-light" style={{boxShadow: "0px -10px 30px rgba(0,0,0,0.2)"}}>
       
@@ -83,7 +90,7 @@ export default function Navbar(){
                   <Dropdown.Menu>
                     <Dropdown.Item><Link className="dropdown-item" to='/consultas'>Minhas Consultas </Link></Dropdown.Item>
                     <Dropdown.Item><Link className="dropdown-item" to='/conguracoes'>Configurações </Link></Dropdown.Item>
-                    <Dropdown.Item><p className="dropdown-item my-0" onClick={signOut}>Encerrar Sessão </p></Dropdown.Item>
+                    <Dropdown.Item><p className="dropdown-item my-0" onClick={handleSignOut}>Encerrar Sessão </p></Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </>

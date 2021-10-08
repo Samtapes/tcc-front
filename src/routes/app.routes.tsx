@@ -8,6 +8,9 @@ import {
 
 import Home from '../pages/home'
 import Navbar from '../pages/navbar'
+import ErrorPage from '../pages/error';
+import AgendarConfirmar from '../pages/agendar_confirmar';
+import Agendar from '../pages/agendar';
 
 
 export default function AppRoutes() {
@@ -17,6 +20,15 @@ export default function AppRoutes() {
       <Switch>
         <Route exact path="/">
           <Home/>
+        </Route>
+        <Route path="/confirmar-agendamento">
+          <AgendarConfirmar/>
+        </Route>
+        <Route path="/agendar">
+          <Agendar/>
+        </Route>
+        <Route path="/">
+          <ErrorPage/>
         </Route>
       </Switch>
     </Router>

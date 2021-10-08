@@ -10,6 +10,7 @@ import Navbar from '../pages/navbar'
 import Register from '../pages/Register_patient';
 import RegisterMedic from '../pages/Register_medic';
 import IndexAuth from '../pages/index_auth';
+import ErrorPage from '../pages/error';
 
 export default function AuthRoutes() {
   return (
@@ -27,6 +28,9 @@ export default function AuthRoutes() {
         </Route>
         <Route path="/cadastro-medico">
           <RegisterMedic/>
+        </Route>
+        <Route path="/">
+          <ErrorPage/>
         </Route>
       </Switch>
     </Router>

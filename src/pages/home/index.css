@@ -82,3 +82,14 @@
     height: 0vh;
 }
 }
+
+.modal-day-button{
+  background-color: #0166da25;
+  border: none;
+  border-radius: 100%;
+  padding: 6px;
+}
+
+.modal-day-button:active{
+  background-color: #0166da42;
+}

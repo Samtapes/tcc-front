@@ -51,6 +51,7 @@ export const AuthProvider: React.FC = ({children}) => {
   }
 
   function signOut(): void {
+    localStorage.removeItem('@conncare/user')
     setUser(() => undefined)
   }
 
