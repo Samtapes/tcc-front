@@ -102,11 +102,11 @@ export default function Home() {
     let minutes = String(d.getMinutes())
 
     if (parseInt(hours) < 10) {
-      hours = String(hours) + '0'
+      hours = '0' + String(hours)
     }
 
     if (parseInt(minutes) < 10) {
-      minutes = String(minutes) + '0'
+      minutes = '0' + String(minutes)
     }
 
     return hours + ':' + minutes

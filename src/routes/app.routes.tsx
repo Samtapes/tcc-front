@@ -1,23 +1,37 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
   BrowserRouter as Router,
   Route, 
-  Switch
+  Switch,
+  useLocation
 } from 'react-router-dom';
 
 import Home from '../pages/home'
-import Navbar from '../pages/navbar'
 import ErrorPage from '../pages/error';
 import AgendarConfirmar from '../pages/agendar_confirmar';
 import Agendar from '../pages/agendar';
 import Consultas from '../pages/consultas';
+import NavbarLogado from '../pages/navbar_logado';
+import Historico from '../pages/historico';
 
 
 export default function AppRoutes() {
+
+  function ScrollToTop() {
+    const { pathname } = useLocation();
+  
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+  
+    return null;
+  }
+
   return (
     <Router>
-      <Navbar/>
+      <ScrollToTop/>
+      <NavbarLogado/>
       <Switch>
         <Route exact path="/">
           <Home/>
@@ -30,6 +44,9 @@ export default function AppRoutes() {
         </Route>
         <Route path="/consultas">
           <Consultas/>
+        </Route>
+        <Route path="/historico">
+          <Historico/>
         </Route>
         <Route path="/">
           <ErrorPage/>

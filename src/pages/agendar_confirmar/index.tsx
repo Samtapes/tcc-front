@@ -14,7 +14,7 @@ export default function AgendarConfirmar() {
   }
 
   function handleSubmit() {
-    history.push('/')
+    history.push('/consultas')
   }
 
   return (
