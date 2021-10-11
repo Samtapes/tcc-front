@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {Link, useHistory} from 'react-router-dom';
 
-import MinhaFoto from '../../static/images/minha_foto.jpg'
 import Clock from '../../static/images/clock.svg'
+import AuthContext from '../../contexts/auth';
+import api from '../../services/api';
 
 export default function AgendarConfirmar() {
+
+  const {consult, user} = useContext(AuthContext)
 
   const history = useHistory()
 
@@ -13,9 +16,16 @@ export default function AgendarConfirmar() {
     history.goBack()
   }
 
-  function handleSubmit() {
-    history.push('/obrigado')
+  async function handleSubmit() {
+    try {
+      const response = await api.post('/consult/' + consult?.medic.id, {date: consult?.consult.date, scheduled_time: consult?.consult.scheduled_time, additional_info: consult?.consult.additional_info}, {headers: {'Authorization': user?.id}})
+      history.push('/obrigado')
+    } catch(error: any) {
+      alert(error.response.data.message)
+    }
   }
+
+  const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
   return (
     <div className="container-fluid  gradient-custom py-5 " style={{height: "100vh" }}>
@@ -50,19 +60,19 @@ export default function AgendarConfirmar() {
             <div className="container bg-light rounded p-4">
               <div className="row ">
 
-                <div className="col-4">
-                  <img className="rounded " src={MinhaFoto} alt="" height="70"/>
+              <div className="col-4">
+                  <img className="rounded " src={consult?.medic.image_url} alt="" height="70"/>
                 </div>
 
                 <div className="col-8">
-                  <h6 className="m-0 p-0">Dra. Letícia Dupont</h6>
-                  <p className="m-0 p-0 text-black-50">Especialização</p>
+                  <h6 className="m-0 p-0">{consult?.medic.name}</h6>
+                  <p className="m-0 p-0 text-black-50">{consult?.medic.specialization}</p>
                 </div>
               </div>
-              
-              <p className="m-0 p-0 my-4 text-black-50 mt-3"><img className="rounded " src={Clock} alt="" height="30"/> 07 de Maio, 14:00</p>
+
+              <p className="m-0 p-0 my-4 text-black-50 mt-3"><img className="rounded " src={Clock} alt="" height="30"/> {consult?.consult.date?.day !== undefined ? consult?.consult.date?.day < 10 ? '0' + String(consult?.consult.date?.day) : consult?.consult.date?.day : 'ERRO'} de {months[consult?.consult.date?.month ? consult?.consult.date?.month : 0]}, {consult?.consult.scheduled_time}</p>
               <p className="m-0 p-0 my-4 text-black-50">Transfêrencia Bancária</p>
-              <p className="m-0 p-0 text-black-50">R$ 250</p>
+              <p className="m-0 p-0 text-black-50">R$ {consult?.medic.price}</p>
             </div>
           </div>
 

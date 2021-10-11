@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 
 import {
   BrowserRouter as Router,
@@ -16,9 +16,12 @@ import NavbarLogado from '../pages/navbar_logado';
 import Historico from '../pages/historico';
 import Obrigado from '../pages/obrigado';
 import Config from '../pages/config';
+import AuthContext from '../contexts/auth';
 
 
 export default function AppRoutes() {
+
+  const {consult} = useContext(AuthContext)
 
   function ScrollToTop() {
     const { pathname } = useLocation();
@@ -38,12 +41,22 @@ export default function AppRoutes() {
         <Route exact path="/">
           <Home/>
         </Route>
-        <Route path="/confirmar-agendamento">
-          <AgendarConfirmar/>
-        </Route>
+        
         <Route path="/agendar">
-          <Agendar/>
+          {consult === undefined || consult === null ?
+            <ErrorPage/>
+            :
+            <Agendar/>
+          }
         </Route>
+        <Route path="/confirmar-agendamento">
+          {consult === undefined || consult === null ?
+            <ErrorPage/>
+            :
+            <AgendarConfirmar/>
+          }
+        </Route>
+
         <Route path="/consultas">
           <Consultas/>
         </Route>

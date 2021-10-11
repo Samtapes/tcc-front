@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {Link} from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react';
+import {Link, useHistory} from 'react-router-dom'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -10,6 +10,31 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import api from '../../services/api';
 
 import Modal from 'react-bootstrap/Modal';
+import AuthContext from '../../contexts/auth';
+
+interface Medic {
+  id: string,
+  image_url: string,
+  name: string,
+  specialization: string,
+  price: number,
+  description: string,
+  additional_info: string,
+  start_of_work: string,
+  end_of_work: string
+}
+
+interface IDate {
+  day: number,
+  month: number,
+  year: number,
+}
+
+interface Consult {
+  date: IDate,
+  scheduled_time: string,
+  additional_info: string | undefined
+}
 
 export default function Home() {
 
@@ -80,6 +105,10 @@ export default function Home() {
       setConsultDate(prevState => ({...prevState, day: new Date(2021, prevState.month, 0).getDate(), month: 11}))
     }
 
+    else if(consultDate.day === new Date().getDate() && method === 'decrease' && consultDate.month === new Date().getMonth()){
+
+    }
+
     else{
       setConsultDate(prevState => ({...prevState, day: prevState.day-1}))
     }
@@ -113,6 +142,15 @@ export default function Home() {
   }
 
   const [time, setTime] = useState(actualTime())
+
+  const {newConsult} = useContext(AuthContext)
+  
+  const history = useHistory()
+
+  function handleNewConsult(medic: Medic, consult: Consult){
+    newConsult(medic, consult)
+    history.push('/agendar')
+  }
 
   return (
     <div className="mt-5">
@@ -174,7 +212,7 @@ export default function Home() {
         <h5 className='text-center my-5'>Não há médicos dessa especialização cadastrados nesse serviço</h5>
       }
 
-      <Modal size="lg" show={medicModal} onHide={() => setMedicModal(() => false)} centered>
+      <Modal size="lg" show={medicModal} onHide={() => {setMedicModal(() => false); setConsultDate({day: d.getDate(), month: d.getMonth(), year: d.getFullYear()})}} centered>
         <Modal.Header closeButton>
           <Modal.Title>Médico</Modal.Title>
         </Modal.Header>
@@ -221,9 +259,9 @@ export default function Home() {
 
               <p>Transferência bancária</p>
 
-              <div className="text-end">
-                <button type="button" className="button">
-                  <Link to={{pathname: 'agendar', state: {medic}}} className="my-auto text-center text-white" style={{textDecoration: 'none'}}>Agendar</Link>
+              <div className="text-center">
+                <button type="button" className="button" onClick={() => handleNewConsult(medic, {date: consultDate, scheduled_time: time, additional_info: undefined})}>
+                  Agendar
                 </button>
               </div>
             </div>
