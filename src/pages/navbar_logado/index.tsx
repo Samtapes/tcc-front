@@ -60,7 +60,7 @@ export default function NavbarLogado() {
 
             <Dropdown.Menu>
               <Dropdown.Item><Link className="dropdown-item" to='/consultas'>Minhas Consultas </Link></Dropdown.Item>
-              <Dropdown.Item><Link className="dropdown-item" to='/conguracoes'>Configurações </Link></Dropdown.Item>
+              <Dropdown.Item><Link className="dropdown-item" to='/configurações'>Configurações </Link></Dropdown.Item>
               <Dropdown.Item><p className="dropdown-item my-0" onClick={handleSignOut}>Encerrar Sessão </p></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

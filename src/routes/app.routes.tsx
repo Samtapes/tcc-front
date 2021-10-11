@@ -14,6 +14,8 @@ import Agendar from '../pages/agendar';
 import Consultas from '../pages/consultas';
 import NavbarLogado from '../pages/navbar_logado';
 import Historico from '../pages/historico';
+import Obrigado from '../pages/obrigado';
+import Config from '../pages/config';
 
 
 export default function AppRoutes() {
@@ -47,6 +49,12 @@ export default function AppRoutes() {
         </Route>
         <Route path="/historico">
           <Historico/>
+        </Route>
+        <Route path="/obrigado">
+          <Obrigado/>
+        </Route>
+        <Route path="/configurações">
+          <Config/>
         </Route>
         <Route path="/">
           <ErrorPage/>

@@ -14,7 +14,7 @@ export default function AgendarConfirmar() {
   }
 
   function handleSubmit() {
-    history.push('/consultas')
+    history.push('/obrigado')
   }
 
   return (
