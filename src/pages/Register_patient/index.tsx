@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import AuthContext from '../../contexts/auth'
 import api from '../../services/api';
@@ -15,6 +15,7 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const history = useHistory()
 
   function handleRegister(event: any) {
     event.preventDefault();
@@ -22,6 +23,8 @@ export default function Register() {
     if (password === confirmPassword) {
       api.post('/register', {name: name + " " + lastName, email, password, medic: null}).then((response) => {
         signIn({email, password})
+        history.push('/')
+        window.location.reload()
       }).catch((error) => {
         alert(error.response.data.message)
       })
