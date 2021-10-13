@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Time from '../../static/images/time.svg'
 import Calendar from '../../static/images/calendar.svg'
 
 import {Link} from 'react-router-dom'
+import AuthContext from '../../contexts/auth';
 
 export default function Obrigado() {
+
+  const {consult, removeConsult} = useContext(AuthContext)
+
+  const formatedDay = consult?.consult.date?.day !== undefined ? consult?.consult.date?.day < 10 ? '0' + String(consult?.consult.date?.day) : consult?.consult.date?.day : ''
+  const formatedMonth = consult?.consult.date?.month !== undefined ? consult?.consult.date?.month+1 < 10 ? '0' + String(consult?.consult.date?.month + 1) : consult?.consult.date?.month + 1 : ''
+
   return (
     <div className="container-fluid  gradient-custom py-5 " style={{height: "100vh"}}>
 
@@ -20,7 +27,7 @@ export default function Obrigado() {
               alt=""
               loading="lazy"
               style={{marginTop: "-1px;"}}
-            /> 12/12</h2>
+            /> {formatedDay}/{formatedMonth}</h2>
           </div>
 
           <div className="col-6 text-start ">
@@ -31,12 +38,12 @@ export default function Obrigado() {
               alt=""
               loading="lazy"
               style={{marginTop: "-1px;"}}
-            /> 12:00
+            /> {consult?.consult.scheduled_time}
             </h2>
           </div>
         </div>
 
-        <Link to='/consultas' className="text-center btn rounded btn-light mb-4 "><i className="fab fa-google mx-2"></i>Retornar à página principal</Link>
+        <Link to='/consultas' onClick={removeConsult} className="text-center btn rounded btn-light mb-4 "><i className="fab fa-google mx-2"></i>Retornar à página principal</Link>
       </div>
     </div>
   )

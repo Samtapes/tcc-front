@@ -7,7 +7,7 @@ import AuthContext from '../../contexts/auth';
 
 export default function NavbarLogado() {
   const {pathname} = useLocation()
-  const {signOut} = useContext(AuthContext)
+  const {signOut, removeConsult} = useContext(AuthContext)
   const history = useHistory()
 
   function handleSignOut(){
@@ -59,8 +59,8 @@ export default function NavbarLogado() {
             </Dropdown.Toggle >
 
             <Dropdown.Menu>
-              <Dropdown.Item><Link className="dropdown-item" to='/consultas'>Minhas Consultas </Link></Dropdown.Item>
-              <Dropdown.Item><Link className="dropdown-item" to='/configurações'>Configurações </Link></Dropdown.Item>
+              <Dropdown.Item><Link className="dropdown-item" to='/consultas' onClick={removeConsult}>Minhas Consultas </Link></Dropdown.Item>
+              <Dropdown.Item><Link className="dropdown-item" to='/configurações' onClick={removeConsult}>Configurações </Link></Dropdown.Item>
               <Dropdown.Item><p className="dropdown-item my-0" onClick={handleSignOut}>Encerrar Sessão </p></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

@@ -66,7 +66,7 @@ export default function Home() {
     
     try {
       const response = await api.get('/medic/consult_configuration', {headers: {Authorization: medic_id}})
-      setTime(actualTime())
+      setTime(getActualTime())
       setMedicModal(() => true)
       setMedic(response.data)
 
@@ -85,36 +85,42 @@ export default function Home() {
   function handleChangeConsultDay(method: any) {
     console.log(consultDate.month)
 
+    // Aumentar o dia da consulta se n for o ultimo dia do mês
     if(consultDate.day < new Date(2021, consultDate.month+1, 0).getDate() && method === 'add') {
       setConsultDate(prevState => ({...prevState, day: prevState.day+1}))
     }
 
+    // Aumentar o mês da consulta caso seja o último dia do mês
     else if(consultDate.day === new Date(2021, consultDate.month+1, 0).getDate() && method === 'add' && consultDate.month+1 !== 12) {
       setConsultDate(prevState => ({...prevState, day: 1, month: prevState.month+1}))
     }
 
+    // Aumentar o mês da consulta e retornar ao dia 1 caso seja o último dia do último mês
     else if(consultDate.day === new Date(2021, consultDate.month+1, 0).getDate() && method === 'add' && consultDate.month+1 === 12) {
       setConsultDate(prevState => ({...prevState, day: 1, month: 0, year: prevState.year+1}))
     }
 
+    // Ir para o último dia do mês anterior caso subtraia no último dia do mês
     else if(consultDate.day === 1 && method === 'decrease' && consultDate.month+1 !== 1) {
       setConsultDate(prevState => ({...prevState, day: new Date(2021, prevState.month, 0).getDate(), month: prevState.month-1}))
     }
 
+    // Ir para o último dia do último mês caso subtraia de 1 de Janeiro
     else if(consultDate.day === 1 && method === 'decrease' && consultDate.month+1 === 1) {
       setConsultDate(prevState => ({...prevState, day: new Date(2021, prevState.month, 0).getDate(), month: 11}))
     }
 
+    // Fazer nada caso tente subtrair do dia atual
     else if(consultDate.day === new Date().getDate() && method === 'decrease' && consultDate.month === new Date().getMonth()){
 
     }
 
+    // Caso contrário, subtraiá 1 dia
     else{
       setConsultDate(prevState => ({...prevState, day: prevState.day-1}))
     }
   }
 
-  // Compare dates
   function compareDates(){
     if (consultDate.day === d.getDate() && consultDate.month === d.getMonth()) {
       return 'Hoje'
@@ -125,8 +131,7 @@ export default function Home() {
     }
   }
 
-  // Get actual time
-  function actualTime(){
+  function getActualTime(){
     let hours = String(d.getHours());
     let minutes = String(d.getMinutes())
 
@@ -141,7 +146,7 @@ export default function Home() {
     return hours + ':' + minutes
   }
 
-  const [time, setTime] = useState(actualTime())
+  const [time, setTime] = useState(getActualTime())
 
   const {newConsult} = useContext(AuthContext)
   

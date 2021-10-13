@@ -59,7 +59,7 @@ export const AuthProvider: React.FC = ({children}) => {
     const user: any = localStorage.getItem('@conncare/user')
 
     if (user !== null){
-      setUser(() => user)
+      setUser(() => JSON.parse(user))
     }
   }, [])
 
@@ -67,7 +67,7 @@ export const AuthProvider: React.FC = ({children}) => {
     try {
       const login = await api.post('/users', {email, password});
       setUser(() => login.data);
-      localStorage.setItem('@conncare/user', login.data)
+      localStorage.setItem('@conncare/user', JSON.stringify(login.data))
       return true
 
     } catch(error: any) {

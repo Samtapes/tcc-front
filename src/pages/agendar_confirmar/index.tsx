@@ -18,7 +18,11 @@ export default function AgendarConfirmar() {
 
   async function handleSubmit() {
     try {
-      const response = await api.post('/consult/' + consult?.medic.id, {date: consult?.consult.date, scheduled_time: consult?.consult.scheduled_time, additional_info: consult?.consult.additional_info}, {headers: {'Authorization': user?.id}})
+      console.log(user?.id)
+      const formatedDay = consult?.consult.date?.day !== undefined ? consult?.consult.date?.day < 10 ? '0' + String(consult?.consult.date?.day) : consult?.consult.date?.day : ''
+      const formatedMonth = consult?.consult.date?.month !== undefined ? consult?.consult.date?.month+1 < 10 ? '0' + String(consult?.consult.date?.month + 1) : consult?.consult.date?.month + 1 : ''
+      const formatedDate = consult?.consult.date?.year + '/' + formatedMonth + '/' + formatedDay
+      const response = await api.post('/consult/' + consult?.medic.id, {date: formatedDate, scheduled_time: consult?.consult.scheduled_time, additional_info: consult?.consult.additional_info}, {headers: {'Authorization': user?.id}})
       history.push('/obrigado')
     } catch(error: any) {
       alert(error.response.data.message)
