@@ -31,10 +31,15 @@ export default function Config(){
   }, [])
 
   function handleSubmit() {
-    // api.put('/users', {image_url: imageUrl, password: senha, age: idade, mass: peso, chronic_diseases: doencas}, {headers:{'Authorization': user?.id}}).then((response) => {
-    //   setImageUrl(response.data.image_url)
-    //   setSenha(response.data.password)
-    // })
+    api.put('/users', {image_url: imageUrl, password: senha, age: null, mass: null, chronic_diseases: null}, {headers:{'Authorization': user?.id}}).then((response) => {
+      setImageUrl(response.data.image_url)
+      setSenha(response.data.password)
+    })
+
+    api.put('/medics', {description: descricao, phone_number: null, patient_preferences: preferencias}, {headers:{'Authorization': user?.id}}).then((response) => {
+      setImageUrl(response.data.image_url)
+      setSenha(response.data.password)
+    })
   }
 
 
