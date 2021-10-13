@@ -17,6 +17,8 @@ export default function Config(){
   const [especializacao, setEspecializacao] = useState('')
   const [preferencias, setPreferencias] = useState('')
   const [descricao, setDescricao] = useState('')
+  const [telefone, setTelefone] = useState('')
+
 
   useEffect(() => {
     setEmail(user?.email ? user?.email : '')
@@ -27,6 +29,7 @@ export default function Config(){
       setEspecializacao(response.data.specialization)
       setPreferencias(response.data.patient_preferences)
       setDescricao(response.data.description)
+      setTelefone(response.data.phone_number)
     })
   }, [])
 
@@ -34,11 +37,16 @@ export default function Config(){
     api.put('/users', {image_url: imageUrl, password: senha, age: null, mass: null, chronic_diseases: null}, {headers:{'Authorization': user?.id}}).then((response) => {
       setImageUrl(response.data.image_url)
       setSenha(response.data.password)
+    }).catch((error) => {
+      alert(error.response.data.message)
     })
 
-    api.put('/medics', {description: descricao, phone_number: null, patient_preferences: preferencias}, {headers:{'Authorization': user?.id}}).then((response) => {
+    api.put('/medics', {description: descricao, phone_number: telefone, patient_preferences: preferencias}, {headers:{'Authorization': user?.id}}).then((response) => {
       setImageUrl(response.data.image_url)
       setSenha(response.data.password)
+      alert('Alteração realizada com sucesso')
+    }).catch((error) => {
+      alert(error.response.data.message)
     })
   }
 
@@ -89,6 +97,13 @@ export default function Config(){
             <div className="form-outline mb-4">
               <input type="text" id="form3Example3" className="form-control p-2" value={preferencias} onChange={event => setPreferencias(event.target.value)}/>
               <label className="form-label">Preferências de Pacientes:</label>
+            </div>
+          </div>
+
+          <div className="col-6">
+            <div className="form-outline mb-4">
+              <input type="text" id="form3Example3" className="form-control p-2" value={telefone} onChange={event => setTelefone(event.target.value)}/>
+              <label className="form-label">Telefone:</label>
             </div>
           </div>
 
