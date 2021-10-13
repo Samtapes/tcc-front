@@ -7,7 +7,7 @@ import AuthContext from '../../contexts/auth';
 
 export default function NavbarLogado() {
   const {pathname} = useLocation()
-  const {signOut, removeConsult} = useContext(AuthContext)
+  const {signOut, removeConsult, user} = useContext(AuthContext)
   const history = useHistory()
 
   function handleSignOut(){
@@ -45,11 +45,19 @@ export default function NavbarLogado() {
 
 
         <div className="collapse navbar-collapse" id="navbarButtonsExample">
-          <ul className="navbar-nav m-auto">
-            <Link to='/' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/' ? 'underline' : 'none'}}> Agendar </Link>
-            <Link to='/consultas' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/consultas' ? 'underline' : 'none'}}> Consultas </Link>
-            <Link to='/historico' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/historico' ? 'underline' : 'none'}}> Histórico </Link>
-          </ul>
+          {user?.is_medic ?
+            <ul className="navbar-nav m-auto">
+              <Link to='/' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/' ? 'underline' : 'none'}}> Pendentes </Link>
+              <Link to='/consultas' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/consultas' ? 'underline' : 'none'}}> Confirmadas </Link>
+              <Link to='/historico' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/historico' ? 'underline' : 'none'}}> Histórico </Link>
+            </ul>
+          :
+            <ul className="navbar-nav m-auto">
+              <Link to='/' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/' ? 'underline' : 'none'}}> Agendar </Link>
+              <Link to='/consultas' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/consultas' ? 'underline' : 'none'}}> Consultas </Link>
+              <Link to='/historico' className="link-white m-auto mx-3 text-light" style={{textDecoration:  pathname === '/historico' ? 'underline' : 'none'}}> Histórico </Link>
+            </ul> 
+          }
   
           <Dropdown>
             <Dropdown.Toggle 
