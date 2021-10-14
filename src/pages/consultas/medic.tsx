@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import AuthContext from '../../contexts/auth';
 import api from '../../services/api';
 
@@ -19,7 +20,8 @@ interface IConsult {
 export default function Confirmadas() {
 
   const [consults, setConsults] = useState([])
-  const {user} = useContext(AuthContext)
+  const {user, newConsultMeet} = useContext(AuthContext)
+  const history = useHistory()
 
   useEffect(() => {
     api.get('/consult/confirmadas', {headers:{'Authorization': user?.id}}).then((response) => {
@@ -32,6 +34,11 @@ export default function Confirmadas() {
   const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
   const days = ['Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo']
 
+  function handleCreateMeet(consult: any) {
+    newConsultMeet({id: consult.id, confirmed: consult.confirmed, image_url: consult.image_url, name: consult.name, additional_info: consult.additional_info, date: consult.date, scheduled_time: consult.scheduled_time})
+    history.push('/prechamada')
+  }
+  
   return (
     <div className="mt-5">
       <div className="container-fluid tamanhoagendar gradient-custom py-5 my-5 m-0 ">
@@ -73,7 +80,7 @@ export default function Confirmadas() {
                       <h6>{consult.date[consult.date.length-2] + consult.date[consult.date.length-1]} de {months[parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1]}</h6>
                       <h6 className="text-black-50">{days[ new Date(2021, parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1, parseInt(consult.date[consult.date.length-2] + consult.date[consult.date.length-1])-1).getDay()]}</h6>
                       <p className="border rounded text-black-50">{consult.scheduled_time}</p>
-                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button">Entrar</button>
+                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button" onClick={() => handleCreateMeet(consult)}>Entrar</button>
                     </div>
                   </div>
 

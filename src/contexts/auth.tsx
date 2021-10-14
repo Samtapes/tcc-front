@@ -39,6 +39,16 @@ interface Consult {
   additional_info: string | undefined
 }
 
+interface IMeet {
+  id: string,
+  confirmed: string,
+  image_url: string
+  name: string,
+  additional_info: string,
+  date: string,
+  scheduled_time: string
+}
+
 interface AuthContextData {
   signed: boolean,
   user: User | null | undefined,
@@ -47,6 +57,10 @@ interface AuthContextData {
   consult: {medic: Medic, consult: Consult} | undefined | null,
   newConsult(medic?: Medic, consult?: Consult): void,
   removeConsult(): void
+
+  consultMeet: IMeet | undefined | null,
+  newConsultMeet(meet?: IMeet): void,
+  removeConsultMeet(): void
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -54,6 +68,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC = ({children}) => {
   const [user, setUser] = useState<User | null | undefined>(null);
   const [consult, setConsult] = useState<{medic: Medic, consult: Consult} | undefined | null>(null);
+  const [consultMeet, setConsultMeet] = useState<IMeet | undefined | null>(null);
 
   useEffect(() => {
     const user: any = localStorage.getItem('@conncare/user')
@@ -90,8 +105,17 @@ export const AuthProvider: React.FC = ({children}) => {
     setConsult(() => undefined)
   }
 
+
+  function newConsultMeet(meet: IMeet) {
+    setConsultMeet(meet)
+  }
+
+  function removeConsultMeet(){
+    setConsultMeet(() => undefined)
+  }
+
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut, consult, newConsult, removeConsult}}>
+    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut, consult, newConsult, removeConsult, consultMeet, newConsultMeet, removeConsultMeet}}>
       {children}
     </AuthContext.Provider>
   )

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../contexts/auth';
 import api from '../../services/api';
+import {useHistory} from 'react-router-dom'
 
 import Load from '../../static/images/load.svg'
 
@@ -17,7 +18,8 @@ interface IConsult {
 export default function Consultas() {
 
   const [consults, setConsults] = useState([])
-  const {user} = useContext(AuthContext)
+  const {user, newConsultMeet} = useContext(AuthContext)
+  const history = useHistory()
 
   useEffect(() => {
     api.get('/consult/todas', {headers:{'Authorization': user?.id}}).then((response) => {
@@ -29,6 +31,11 @@ export default function Consultas() {
 
   const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
   const days = ['Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo']
+
+  function handleEnterMeet(consult: any) {
+    newConsultMeet({id: consult.id, confirmed: consult.confirmed, image_url: consult.image_url, name: consult.name, additional_info: consult.additional_info, date: consult.date, scheduled_time: consult.scheduled_time})
+    history.push('/prechamada')
+  }
 
   return (
     <div className="mt-5">
@@ -72,7 +79,7 @@ export default function Consultas() {
                       <h6>{consult.date[consult.date.length-2] + consult.date[consult.date.length-1]} de {months[parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1]}</h6>
                       <h6 className="text-black-50">{days[ new Date(2021, parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1, parseInt(consult.date[consult.date.length-2] + consult.date[consult.date.length-1])-1).getDay()]}</h6>
                       <p className="border rounded text-black-50">{consult.scheduled_time}</p>
-                      <button className=" m-0 btn btn-sm btn-rounded btn-blue">Entrar</button>
+                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button" onClick={() => handleEnterMeet(consult)}>Entrar</button>
                     </div>
                   </div>
 

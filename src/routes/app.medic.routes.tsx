@@ -18,11 +18,12 @@ import AuthContext from '../contexts/auth';
 import Pendendetes from '../pages/home/medic';
 import MedicConfig from '../pages/config/medic';
 import Confirmadas from '../pages/consultas/medic';
+import PreChamada from '../pages/pre_chanada';
 
 
 export default function AppMedicRoutes() {
 
-  const {consult} = useContext(AuthContext)
+  const {consult, consultMeet} = useContext(AuthContext)
 
   function ScrollToTop() {
     const { pathname } = useLocation();
@@ -69,6 +70,13 @@ export default function AppMedicRoutes() {
         </Route>
         <Route path="/configurações">
           <MedicConfig/>
+        </Route>
+        <Route path="/prechamada">
+          {consultMeet === undefined || consultMeet === null ?
+            <ErrorPage/>
+            :
+            <PreChamada/>
+          }
         </Route>
         <Route path="/">
           <ErrorPage/>

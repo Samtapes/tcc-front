@@ -17,11 +17,12 @@ import Historico from '../pages/historico';
 import Obrigado from '../pages/obrigado';
 import Config from '../pages/config';
 import AuthContext from '../contexts/auth';
+import PreChamada from '../pages/pre_chanada';
 
 
 export default function AppRoutes() {
 
-  const {consult} = useContext(AuthContext)
+  const {consult, consultMeet} = useContext(AuthContext)
 
   function ScrollToTop() {
     const { pathname } = useLocation();
@@ -68,6 +69,13 @@ export default function AppRoutes() {
         </Route>
         <Route path="/configurações">
           <Config/>
+        </Route>
+        <Route path="/prechamada">
+          {consultMeet === undefined || consultMeet === null ?
+            <ErrorPage/>
+            :
+            <PreChamada/>
+          }
         </Route>
         <Route path="/">
           <ErrorPage/>
