@@ -7,6 +7,7 @@ import './index.css'
 
 interface IConsult {
   id: string,
+  confirmed: boolean,
   specialization: string, 
   image_url: string,
   name: string,
@@ -21,7 +22,7 @@ export default function Pendendetes() {
   const {user} = useContext(AuthContext)
 
   useEffect(() => {
-    api.get('/consult', {headers:{'Authorization': user?.id}}).then((response) => {
+    api.get('/consult/pendentes', {headers:{'Authorization': user?.id}}).then((response) => {
       setConsults(response.data);
     }).catch((error: any) => {
       alert(error.response.data.message)
@@ -30,6 +31,19 @@ export default function Pendendetes() {
 
   const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
   const days = ['Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo']
+
+
+  function handleConfirmConsult(consult_id: string) {
+    api.patch('/consult/' + consult_id, {confirmation: true}, {headers:{'Authorization': user?.id}}).then(response => {
+      api.get('/consult/pendentes', {headers:{'Authorization': user?.id}}).then((response) => {
+        setConsults(response.data);
+      }).catch((error: any) => {
+        alert(error.response.data.message)
+      })
+    }).catch(err => {
+      alert(err.response.data.message)
+    })
+  }
 
   return (
     <div className="mt-5">
@@ -72,7 +86,7 @@ export default function Pendendetes() {
                       <h6>{consult.date[consult.date.length-2] + consult.date[consult.date.length-1]} de {months[parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1]}</h6>
                       <h6 className="text-black-50">{days[ new Date(2021, parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1, parseInt(consult.date[consult.date.length-2] + consult.date[consult.date.length-1])-1).getDay()]}</h6>
                       <p className="border rounded text-black-50">{consult.scheduled_time}</p>
-                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button">Confirmar</button>
+                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button" onClick={() => handleConfirmConsult(consult.id)}>Confirmar</button>
                       <button className=" m-0 btn btn-sm btn-rounded btn-blue button">Trocar Horário</button>
                     </div>
                   </div>
@@ -83,7 +97,7 @@ export default function Pendendetes() {
           )) : 
             <div className="container text-center text-black-50 py-5">
               <img src={Load}  alt=""/>
-              <h2 className="my-5">Parece que você não agendou uma consulta ainda... <br/> Agende uma e retorne aqui para visualizá-la!</h2>
+              <h2 className="my-5">Parece que você não tem uma nova consulta no momento... <br/> Aguarde uma e retorne aqui para visualizá-la!</h2>
             </div>
           }
         </div>

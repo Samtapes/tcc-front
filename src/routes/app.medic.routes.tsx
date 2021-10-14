@@ -17,6 +17,7 @@ import Obrigado from '../pages/obrigado';
 import AuthContext from '../contexts/auth';
 import Pendendetes from '../pages/home/medic';
 import MedicConfig from '../pages/config/medic';
+import Confirmadas from '../pages/consultas/medic';
 
 
 export default function AppMedicRoutes() {
@@ -58,7 +59,7 @@ export default function AppMedicRoutes() {
         </Route>
 
         <Route path="/consultas">
-          <Consultas/>
+          <Confirmadas/>
         </Route>
         <Route path="/historico">
           <Historico/>
