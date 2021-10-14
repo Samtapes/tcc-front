@@ -19,6 +19,12 @@ export default function Config(){
   const [descricao, setDescricao] = useState('')
   const [telefone, setTelefone] = useState('')
 
+  const [preco, setPreco] = useState('')
+  const [comecoTrabalho, setComecoTrabalho] = useState('')
+  const [fimTrabalho, setFimTrabalho] = useState('')
+  const [informacaoAdicional, setInformacaoAdicional] = useState('')
+  const [descricaoConsulta, setDescricaoConsulta] = useState('')
+
 
   useEffect(() => {
     setEmail(user?.email ? user?.email : '')
@@ -31,7 +37,15 @@ export default function Config(){
       setDescricao(response.data.description)
       setTelefone(response.data.phone_number)
     })
-  }, [])
+
+    api.get('/medic/consult_configuration', {headers:{'Authorization': user?.id}}).then(response => {
+      setPreco(response.data.price)
+      setComecoTrabalho(response.data.start_of_work)
+      setFimTrabalho(response.data.end_of_work)
+      setInformacaoAdicional(response.data.additional_info)
+      setDescricaoConsulta(response.data.description)
+    })
+  }, [user])
 
   function handleSubmit() {
     api.put('/users', {image_url: imageUrl, password: senha, age: null, mass: null, chronic_diseases: null}, {headers:{'Authorization': user?.id}}).then((response) => {
@@ -47,6 +61,22 @@ export default function Config(){
       alert('Alteração realizada com sucesso')
     }).catch((error) => {
       alert(error.response.data.message)
+    })
+  }
+
+  function handleCreateConsultConfiguration() {
+    api.get('/medic/consult_configuration', {headers:{'Authorization': user?.id}}).then(response => {
+      api.put('/medic/consult_configuration', {price: preco, start_of_work: comecoTrabalho, end_of_work: fimTrabalho, description: descricaoConsulta, additional_info: informacaoAdicional}, {headers:{'Authorization': user?.id}}).then((response) => {
+        alert('Configurações da consulta atualizadas com sucesso!')
+      }).catch((error) => {
+        alert(error.response.data.message)
+      })
+    }).catch(error => {
+      api.post('/medic/consult_configuration', {price: preco, start_of_work: comecoTrabalho, end_of_work: fimTrabalho, description: descricaoConsulta, additional_info: informacaoAdicional}, {headers:{'Authorization': user?.id}}).then((response) => {
+        alert('Configurações da consulta criadas com sucesso!')
+      }).catch((error) => {
+        alert(error.response.data.message)
+      })
     })
   }
 
@@ -88,33 +118,41 @@ export default function Config(){
         <div className="row">
           <div className="col-6">
             <div className="form-outline mb-4">
-              <input readOnly={true} type="text" id="form3Example3" className="form-control p-2" value={especializacao} onChange={event => setEspecializacao(event.target.value)}/>
+              <input readOnly={true} type="text" className="form-control p-2" value={especializacao} onChange={event => setEspecializacao(event.target.value)}/>
               <label className="form-label">Especialização:</label>
             </div>
           </div>
 
           <div className="col-6">
             <div className="form-outline mb-4">
-              <input type="text" id="form3Example3" className="form-control p-2" value={preferencias} onChange={event => setPreferencias(event.target.value)}/>
+              <input type="text" className="form-control p-2" value={preferencias} onChange={event => setPreferencias(event.target.value)}/>
               <label className="form-label">Preferências de Pacientes:</label>
             </div>
           </div>
 
           <div className="col-6">
             <div className="form-outline mb-4">
-              <input type="text" id="form3Example3" className="form-control p-2" value={telefone} onChange={event => setTelefone(event.target.value)}/>
+              <input type="text" className="form-control p-2" value={telefone} onChange={event => setTelefone(event.target.value)}/>
               <label className="form-label">Telefone:</label>
             </div>
           </div>
 
           <div className="col-12">
             <div className="form-outline mb-4">
-              <input type="text" id="form3Example3" className="form-control p-2" value={descricao} onChange={event => setDescricao(event.target.value)}/>
+              <input type="text" className="form-control p-2" value={descricao} onChange={event => setDescricao(event.target.value)}/>
               <label className="form-label">Descrição:</label>
             </div>
           </div>
         </div>
 
+        <div className='d-flex mt-5' style={{alignContent: 'center', justifyContent: 'center'}}>
+          <button className='button' onClick={handleSubmit}>Salvar</button>
+        </div>
+
+
+        <h2 className="mb-3 mt-5">Consultas:</h2>
+
+        <h3 className="mb-3 mt-5">Dias livres:</h3>
         <div className="month">      
         <ul>
           <li className="prev">&#10094;</li>
@@ -169,7 +207,47 @@ export default function Config(){
         <li>30</li>
         </ul>
 
-        <button onClick={handleSubmit}>Salvar</button>
+        <h2 className="mb-3 mt-5">Configurações de Consulta:</h2>
+        <div className="row">
+          <div className="col-6">
+            <div className="form-outline mb-4">
+              <input type="text" className="form-control p-2" value={preco} onChange={event => setPreco(event.target.value)}/>
+              <label className="form-label">Preço:</label>
+            </div>
+          </div>
+
+          <div className="col-6">
+            <div className="form-outline mb-4">
+              <input type="time" className="form-control p-2" value={comecoTrabalho} onChange={event => setComecoTrabalho(event.target.value)}/>
+              <label className="form-label">Começo do expediente:</label>
+            </div>
+          </div>
+
+          <div className="col-6">
+            <div className="form-outline mb-4">
+              <input type="time" className="form-control p-2" value={fimTrabalho} onChange={event => setFimTrabalho(event.target.value)}/>
+              <label className="form-label">Fim do expediente:</label>
+            </div>
+          </div>
+
+          <div className="col-6">
+            <div className="form-outline mb-4">
+              <input type="text" className="form-control p-2" value={informacaoAdicional} onChange={event => setInformacaoAdicional(event.target.value)}/>
+              <label className="form-label">Informação Adicional:</label>
+            </div>
+          </div>
+
+          <div className="col-12">
+            <div className="form-outline mb-4">
+              <input type="text" className="form-control p-2" value={descricaoConsulta} onChange={event => setDescricaoConsulta(event.target.value)}/>
+              <label className="form-label">Descrição da consulta:</label>
+            </div>
+          </div>
+        </div>
+
+        <div className='d-flex mt-5' style={{alignContent: 'center', justifyContent: 'center'}}>
+          <button className='button' onClick={handleCreateConsultConfiguration}>Salvar</button>
+        </div>
       </div>
     </div>
   )

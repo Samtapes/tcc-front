@@ -1,7 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import AuthContext from '../../contexts/auth'
 import api from '../../services/api';
@@ -29,6 +29,7 @@ export default function RegisterMedic() {
   const [phone_number, setPhone_number] = useState('');
   const [registerNumber, setRegisterNumber] = useState('');
 
+  const history = useHistory()
 
   function handleRegister(event: any) {
     event.preventDefault();
@@ -42,6 +43,8 @@ export default function RegisterMedic() {
     if (password === confirmPassword) {
       api.post('/register', {name: name + " " + lastName, email, password, medic: medic}).then((response) => {
         signIn({email, password})
+        history.push('/')
+        window.location.reload()
       }).catch((error) => {
         alert(error.response.data.message)
       })

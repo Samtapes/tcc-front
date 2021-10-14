@@ -28,12 +28,12 @@ export default function Config(){
       setIdade(response.data.age)
 
       let tempPeso = response.data.mass
-      tempPeso = String(tempPeso).replace('.', ',')
+      tempPeso = tempPeso === null ? '' : String(tempPeso).replace('.', ',')
 
       setPeso(tempPeso)
       setDoencas(response.data.chronic_diseases)
     })
-  }, [])
+  }, [user])
 
   function handleSubmit() {
     api.put('/users', {image_url: imageUrl, password: senha, age: idade, mass: peso, chronic_diseases: doencas}, {headers:{'Authorization': user?.id}}).then((response) => {
@@ -66,7 +66,7 @@ export default function Config(){
         <div className="row">
           <div className="col-6">
             <div className="form-outline mb-4">
-              <input readOnly={true} type="email" id="form3Example3" className="form-control p-2" value={email} onChange={event => setEmail(event.target.value)}/>
+              <input readOnly={true} type="email" className="form-control p-2" value={email} onChange={event => setEmail(event.target.value)}/>
               <label className="form-label">Email:</label>
             </div>
           </div>
@@ -83,7 +83,7 @@ export default function Config(){
         <div className="row">
           <div className="col-6">
             <div className="form-outline mb-4">
-              <input type="number" id="form3Example3" className="form-control p-2" value={idade} onChange={event => setIdade(parseInt(event.target.value))}/>
+              <input type="number" className="form-control p-2" value={idade} onChange={event => setIdade(parseInt(event.target.value))}/>
               <label className="form-label">Idade:</label>
             </div>
           </div>
@@ -104,7 +104,9 @@ export default function Config(){
           </div>
         </div>
 
-        <button onClick={handleSubmit}>Salvar</button>
+        <div className='d-flex mt-5' style={{alignContent: 'center', justifyContent: 'center'}}>
+          <button className='button' onClick={handleSubmit}>Salvar</button>
+        </div>
       </div>
     </div>
   )

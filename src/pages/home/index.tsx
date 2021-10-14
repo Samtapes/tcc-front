@@ -44,6 +44,9 @@ export default function Home() {
   const [especializacao, setEspecializacao] = useState('');
   const [medicModal, setMedicModal] = useState(false);
 
+  const [openDays, setOpenDays] = useState([])
+  const [openInThisDay, setOpenInThisDay] = useState(false)
+
   // Getting medics and specializations
   useEffect(() => {
     api.get('/medics/'+page+'?specialization_name='+especializacao).then((response) => {
@@ -65,6 +68,7 @@ export default function Home() {
   async function handleGetConsultInfo(medic_id: any) {
     
     try {
+      checkMedicOpenInThisDay(medic_id, consultDate.year + '/' + Number(consultDate.month+1) + '/' + consultDate.day)
       const response = await api.get('/medic/consult_configuration', {headers: {Authorization: medic_id}})
       setTime(getActualTime())
       setMedicModal(() => true)
@@ -82,32 +86,35 @@ export default function Home() {
   const [consultDate, setConsultDate] = useState({day: d.getDate(), month: d.getMonth(), year: d.getFullYear()})
 
   // Change consult day
-  function handleChangeConsultDay(method: any) {
-    console.log(consultDate.month)
-
+  async function handleChangeConsultDay(method: any, medic_id: any) {
     // Aumentar o dia da consulta se n for o ultimo dia do mês
     if(consultDate.day < new Date(2021, consultDate.month+1, 0).getDate() && method === 'add') {
       setConsultDate(prevState => ({...prevState, day: prevState.day+1}))
+      checkMedicOpenInThisDay(medic_id, consultDate.year + '/' + Number(consultDate.month+1) + '/' + Number(consultDate.day+1))
     }
 
     // Aumentar o mês da consulta caso seja o último dia do mês
     else if(consultDate.day === new Date(2021, consultDate.month+1, 0).getDate() && method === 'add' && consultDate.month+1 !== 12) {
       setConsultDate(prevState => ({...prevState, day: 1, month: prevState.month+1}))
+      checkMedicOpenInThisDay(medic_id, consultDate.year + '/' + Number(consultDate.month+2) + '/' + 1)
     }
 
     // Aumentar o mês da consulta e retornar ao dia 1 caso seja o último dia do último mês
     else if(consultDate.day === new Date(2021, consultDate.month+1, 0).getDate() && method === 'add' && consultDate.month+1 === 12) {
       setConsultDate(prevState => ({...prevState, day: 1, month: 0, year: prevState.year+1}))
+      checkMedicOpenInThisDay(medic_id, Number(consultDate.year+1) + '/' + Number(1) + '/' + 1)
     }
 
     // Ir para o último dia do mês anterior caso subtraia no último dia do mês
     else if(consultDate.day === 1 && method === 'decrease' && consultDate.month+1 !== 1) {
       setConsultDate(prevState => ({...prevState, day: new Date(2021, prevState.month, 0).getDate(), month: prevState.month-1}))
+      checkMedicOpenInThisDay(medic_id, consultDate.year + '/' + Number(consultDate.month) + '/' + new Date(2021, consultDate.month, 0).getDate())
     }
 
     // Ir para o último dia do último mês caso subtraia de 1 de Janeiro
     else if(consultDate.day === 1 && method === 'decrease' && consultDate.month+1 === 1) {
       setConsultDate(prevState => ({...prevState, day: new Date(2021, prevState.month, 0).getDate(), month: 11}))
+      checkMedicOpenInThisDay(medic_id, consultDate.year + '/' + Number(11) + '/' + new Date(2021, consultDate.month, 0))
     }
 
     // Fazer nada caso tente subtrair do dia atual
@@ -118,7 +125,9 @@ export default function Home() {
     // Caso contrário, subtraiá 1 dia
     else{
       setConsultDate(prevState => ({...prevState, day: prevState.day-1}))
+      checkMedicOpenInThisDay(medic_id, consultDate.year + '/' + Number(consultDate.month+1) + '/' + Number(consultDate.day-1))
     }
+
   }
 
   function compareDates(){
@@ -155,6 +164,22 @@ export default function Home() {
   function handleNewConsult(medic: Medic, consult: Consult){
     newConsult(medic, consult)
     history.push('/agendar')
+  }
+
+  async function checkMedicOpenInThisDay(medic_id: any, consult_date: any) {
+    try {
+      const openDaysReponse = await api.get('/medic/open_days', {headers: {Authorization: medic_id}})
+      setOpenDays(openDaysReponse.data)
+  
+      setOpenInThisDay(false)
+      openDaysReponse.data.map((openDay: any) => {
+        if(openDay.date === consult_date){
+          setOpenInThisDay(true)
+        }
+      })
+    } catch (error: any) {
+      alert(error.response.data.message)
+    }
   }
 
   return (
@@ -244,16 +269,16 @@ export default function Home() {
             <div className="d-flex flex-column text-center mx-5">
 
               <div className='d-flex flex-row my-3'>
-                <button className="modal-day-button" onClick={() => handleChangeConsultDay('decrease')}>
+                <button className="modal-day-button" onClick={() => handleChangeConsultDay('decrease', medic.id)}>
                   <FaArrowLeft color='#0166DA' size='20px'/>
                 </button>
 
                 <div>
-                  <h6>{consultDate.day} de {months[consultDate.month]}</h6>
+                  <h6 style={{color: openInThisDay ? 'green' : 'red'}}>{consultDate.day} de {months[consultDate.month]}</h6>
                   <p>{compareDates()}</p>
                 </div>
 
-                <button className="modal-day-button" onClick={() => handleChangeConsultDay('add')}>
+                <button className="modal-day-button" onClick={() => handleChangeConsultDay('add', medic.id)}>
                   <FaArrowRight color='#0166DA' size='20px'/>
                 </button>
               </div>

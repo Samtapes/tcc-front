@@ -59,7 +59,7 @@ export const AuthProvider: React.FC = ({children}) => {
     const user: any = localStorage.getItem('@conncare/user')
 
     if (user !== null){
-      setUser(() => JSON.parse(user))
+      signIn({email: JSON.parse(user).email, password:JSON.parse(user).password})
     }
   }, [])
 
