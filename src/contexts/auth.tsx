@@ -41,12 +41,15 @@ interface Consult {
 
 interface IMeet {
   id: string,
-  confirmed: string,
-  image_url: string
+  confirmed: boolean,
+  specialization: string, 
+  image_url: string,
   name: string,
   additional_info: string,
   date: string,
-  scheduled_time: string
+  scheduled_time: string,
+  started_at: string,
+  finished_at: string,
 }
 
 interface AuthContextData {

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {
   BrowserRouter as Router,
@@ -10,7 +10,6 @@ import {
 import ErrorPage from '../pages/error';
 import AgendarConfirmar from '../pages/agendar_confirmar';
 import Agendar from '../pages/agendar';
-import Consultas from '../pages/consultas';
 import NavbarLogado from '../pages/navbar_logado';
 import Historico from '../pages/historico';
 import Obrigado from '../pages/obrigado';
@@ -19,16 +18,25 @@ import Pendendetes from '../pages/home/medic';
 import MedicConfig from '../pages/config/medic';
 import Confirmadas from '../pages/consultas/medic';
 import PreChamada from '../pages/pre_chanada';
+import Chamada from '../pages/chamada';
+import Footer from '../pages/footer'
 
 
 export default function AppMedicRoutes() {
 
   const {consult, consultMeet} = useContext(AuthContext)
+  const [showNav, setShowNav] = useState(true)
 
   function ScrollToTop() {
     const { pathname } = useLocation();
-  
+    console.log(pathname)
+
     useEffect(() => {
+      if(pathname === '/consulta/' + consultMeet?.id){
+        setShowNav(false)
+      } else {
+        setShowNav(true)
+      }
       window.scrollTo(0, 0);
     }, [pathname]);
   
@@ -38,7 +46,11 @@ export default function AppMedicRoutes() {
   return (
     <Router>
       <ScrollToTop/>
-      <NavbarLogado/>
+      {showNav ?
+        <NavbarLogado/>
+        :
+        <></>
+      }
       <Switch>
         <Route exact path="/">
           <Pendendetes/>
@@ -78,10 +90,22 @@ export default function AppMedicRoutes() {
             <PreChamada/>
           }
         </Route>
+        <Route path="/consulta/:consult_id">
+          {consultMeet === undefined || consultMeet === null ?
+            <ErrorPage/>
+            :
+            <Chamada/>
+          }
+        </Route>
         <Route path="/">
           <ErrorPage/>
         </Route>
       </Switch>
+      {showNav ?
+        <Footer/>
+        :
+        <></>
+      }
     </Router>
   )
 }

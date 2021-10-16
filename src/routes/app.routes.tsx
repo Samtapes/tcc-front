@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {
   BrowserRouter as Router,
@@ -18,16 +18,25 @@ import Obrigado from '../pages/obrigado';
 import Config from '../pages/config';
 import AuthContext from '../contexts/auth';
 import PreChamada from '../pages/pre_chanada';
+import Chamada from '../pages/chamada';
+import Footer from '../pages/footer'
 
 
 export default function AppRoutes() {
 
   const {consult, consultMeet} = useContext(AuthContext)
+  const [showNav, setShowNav] = useState(true)
 
   function ScrollToTop() {
     const { pathname } = useLocation();
-  
+    console.log(pathname)
+
     useEffect(() => {
+      if(pathname === '/consulta/' + consultMeet?.id){
+        setShowNav(false)
+      } else {
+        setShowNav(true)
+      }
       window.scrollTo(0, 0);
     }, [pathname]);
   
@@ -37,7 +46,11 @@ export default function AppRoutes() {
   return (
     <Router>
       <ScrollToTop/>
-      <NavbarLogado/>
+      {showNav ?
+        <NavbarLogado/>
+        :
+        <></>
+      }
       <Switch>
         <Route exact path="/">
           <Home/>
@@ -77,10 +90,22 @@ export default function AppRoutes() {
             <PreChamada/>
           }
         </Route>
+        <Route path="/consulta/:consult_id">
+          {consultMeet === undefined || consultMeet === null ?
+            <ErrorPage/>
+            :
+            <Chamada/>
+          }
+        </Route>
         <Route path="/">
           <ErrorPage/>
         </Route>
       </Switch>
+      {showNav ?
+        <Footer/>
+        :
+        <></>
+      }
     </Router>
   )
 }

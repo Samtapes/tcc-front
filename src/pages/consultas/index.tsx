@@ -7,13 +7,17 @@ import Load from '../../static/images/load.svg'
 
 interface IConsult {
   id: string,
+  confirmed: boolean,
   specialization: string, 
   image_url: string,
   name: string,
   additional_info: string,
   date: string,
   scheduled_time: string,
+  started_at: string,
+  finished_at: string,
 }
+
 
 export default function Consultas() {
 
@@ -32,8 +36,8 @@ export default function Consultas() {
   const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
   const days = ['Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo']
 
-  function handleEnterMeet(consult: any) {
-    newConsultMeet({id: consult.id, confirmed: consult.confirmed, image_url: consult.image_url, name: consult.name, additional_info: consult.additional_info, date: consult.date, scheduled_time: consult.scheduled_time})
+  function handleEnterMeet(consult: IConsult) {
+    newConsultMeet(consult)
     history.push('/prechamada')
   }
 

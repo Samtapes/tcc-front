@@ -15,6 +15,8 @@ interface IConsult {
   additional_info: string,
   date: string,
   scheduled_time: string,
+  started_at: string,
+  finished_at: string,
 }
 
 export default function Confirmadas() {
@@ -34,8 +36,8 @@ export default function Confirmadas() {
   const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
   const days = ['Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo']
 
-  function handleCreateMeet(consult: any) {
-    newConsultMeet({id: consult.id, confirmed: consult.confirmed, image_url: consult.image_url, name: consult.name, additional_info: consult.additional_info, date: consult.date, scheduled_time: consult.scheduled_time})
+  function handleCreateMeet(consult: IConsult) {
+    newConsultMeet(consult)
     history.push('/prechamada')
   }
   
@@ -80,7 +82,7 @@ export default function Confirmadas() {
                       <h6>{consult.date[consult.date.length-2] + consult.date[consult.date.length-1]} de {months[parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1]}</h6>
                       <h6 className="text-black-50">{days[ new Date(2021, parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1, parseInt(consult.date[consult.date.length-2] + consult.date[consult.date.length-1])-1).getDay()]}</h6>
                       <p className="border rounded text-black-50">{consult.scheduled_time}</p>
-                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button" onClick={() => handleCreateMeet(consult)}>Entrar</button>
+                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button" onClick={() => handleCreateMeet(consult)}>{consult.started_at !== null ? 'Entrar' : 'Começar'}</button>
                     </div>
                   </div>
 
