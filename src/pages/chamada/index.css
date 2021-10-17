@@ -51,19 +51,24 @@
   justify-content: space-around;
 }
 
-.messages-container{
-  width: 25%;
-  height: 100vh;
-  margin: none;
-  background-color: #F9F9F9;
-}
-
 .btn-finish-consult{
   background-color: #EB4335;
   color: #fff;
   border-radius: 7px;
   justify-self: right;
 }
+
+
+
+.messages-container{
+  width: 25%;
+  height: 100vh;
+  margin: none;
+  background-color: #F9F9F9;
+  display: flex;
+  flex-direction: column;
+}
+
 
 .chat-info-container{
   display: flex;
@@ -79,10 +84,136 @@
   font-family: 'Jones-Medium';
 }
 
+.chat-messages-container{
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 5%; */
+  height: 100%;
+  justify-content: end;
+}
+
+
+
 .your-message{
+  align-self:flex-end;
+  margin-right: 7%;
+  display: flex;
+  flex-direction: column;
+  width: 93%;
+  margin-top: 10%;
+}
+
+.your-message-info{
+  align-self:flex-end;
+  display: flex;
+  margin-bottom: 3%;
+}
+
+.your-message-name{
+  align-self: center;
+  margin: 0px;
+  margin-right: 8px;
+}
+
+.your-message-image{
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 200px;
+  align-self:flex-end;
+}
+
+.your-message-text{
   background-color: #fff;
-  padding: 3%;
+  padding: 5% 6%;
+  margin: 0px;
   color: #727272;
   border-radius: 10px;
-  box-shadow: 0px 8px 24px #7090B0;
+  box-shadow: 0px 8px 24px -10px #7090B0;
+  display: inline-block;
+  align-self:flex-end;
+  min-width: 150px;
+}
+
+
+
+
+.other-message{
+  align-self:flex-start;
+  margin-left: 7%;
+  display: flex;
+  flex-direction: column;
+  width: 93%;
+  margin-top: 10%;
+}
+
+.other-message-info{
+  align-self:flex-start;
+  display: flex;
+  margin-bottom: 3%;
+}
+
+.other-message-name{
+  align-self: center;
+  margin: 0px;
+  margin-left: 8px;
+}
+
+.other-message-image{
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 200px;
+  align-self:flex-end;
+}
+
+.other-message-text{
+  background-color: #fff;
+  padding: 5% 6%;
+  margin: 0px;
+  color: #727272;
+  border-radius: 10px;
+  box-shadow: 0px 8px 24px -10px #7090B0;
+  display: inline-block;
+  align-self:flex-start;
+  min-width: 150px;
+}
+
+
+
+.send-message-container{
+  background-color: #fff;
+  padding: 5% 6%;
+  margin: 0px;
+  color: #727272;
+  border-radius: 10px;
+  box-shadow: 0px 8px 24px -10px #7090B0;
+  width: 90%;
+  align-self: center;
+  margin-top: 13%;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.send-message-input{
+  border: none;
+  outline: none;
+}
+
+
+
+.modal-finish-consult-btns{
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal-btn-cancel-finish-consult{
+  background-color: #0166DA;
+  color: #fff;
+  border-radius: 7px;
+  justify-self: right;
 }
