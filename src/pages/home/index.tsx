@@ -207,40 +207,53 @@ export default function Home() {
 
       </div>
 
-      {medics.length >= 1 ? medics.map((medic: any) => (
-        <div key={medic.id} className="container py-5 d-flex flex-row shadow bg-light p-4 container border my-5" style={{maxWidth: '600px', borderRadius: '15px'}}>
+      
 
-            <div className="">
-              <img className="rounded " src={medic.image_url} alt="" height="130"/>
-            </div>
+       
 
-            <div className="mx-4 w-100">
-              <h5>{medic.name}</h5>
-              <h6 className="text-black-50">{medic.specialization}</h6>
-              <h6><img className="rounded " src={Star} alt="" height="20"/><img className="rounded " src={Star} alt="" height="20"/><img className="rounded " src={Star} alt="" height="20"/><img className="rounded " src={Star} alt="" height="20"/><img className="rounded " src={Star} alt="" height="20"/></h6>
+        <div className="container ">
+          <div className="row container">
+          {medics.length >= 1 ? medics.map((medic: any) => (
+          <div key={medic.id} className=" col-6 mx-auto d-flex flex-row shadow bg-light border p-4  my-5" style={{ maxWidth: '600px', borderRadius: '15px'}}>
 
-              <div className="d-flex flex-row last-row">
+<div className="">
+  <img className="rounded " src={medic.image_url} alt="" height="130"/>
+</div>
 
-                <div className="me-auto">
-                  <div className="text-end">
-                    <button type="button" className="button" onClick={() => handleGetConsultInfo(medic.id)}>
-                      <p className="my-auto text-center ">Ver mais</p>
-                    </button>
-                  </div>
-                </div>
+<div className="mx-4 w-100">
+  <h5>{medic.name}</h5>
+  <h6 className="text-black-50">{medic.specialization}</h6>
+  <h6><img className="rounded " src={Star} alt="" height="20"/><img className="rounded " src={Star} alt="" height="20"/><img className="rounded " src={Star} alt="" height="20"/><img className="rounded " src={Star} alt="" height="20"/><img className="rounded " src={Star} alt="" height="20"/></h6>
 
-                <div className="my-auto">
-                  <div className="text-end">
-                    <Link to="/"> <img className="text-end" src={Coracao} alt=""/></Link>
-                  </div>
-                </div>
-              </div>
+  <div className="d-flex flex-row last-row">
 
-            </div>
-        </div>
+    <div className="me-auto">
+      <div className="text-end">
+        <button type="button" className="button" onClick={() => handleGetConsultInfo(medic.id)}>
+          <p className="my-auto text-center ">Ver mais</p>
+        </button>
+      </div>
+    </div>
+
+    <div className="my-auto">
+      <div className="text-end">
+        <Link to="/"> <img className="text-end" src={Coracao} alt=""/></Link>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+          
+
+        
+        
       )) :
         <h5 className='text-center my-5'>Não há médicos dessa especialização cadastrados nesse serviço</h5>
       }
+      </div>
+
+</div>
 
       <Modal size="lg" show={medicModal} onHide={() => {setMedicModal(() => false); setConsultDate({day: d.getDate(), month: d.getMonth(), year: d.getFullYear()})}} centered>
         <Modal.Header closeButton>
