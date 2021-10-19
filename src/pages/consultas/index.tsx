@@ -28,6 +28,7 @@ export default function Consultas() {
   useEffect(() => {
     api.get('/consult/todas', {headers:{'Authorization': user?.id}}).then((response) => {
       setConsults(response.data);
+      console.log(response.data)
     }).catch((error: any) => {
       alert(error.response.data.message)
     })
@@ -83,7 +84,17 @@ export default function Consultas() {
                       <h6>{consult.date[consult.date.length-2] + consult.date[consult.date.length-1]} de {months[parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1]}</h6>
                       <h6 className="text-black-50">{days[ new Date(2021, parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1, parseInt(consult.date[consult.date.length-2] + consult.date[consult.date.length-1])-1).getDay()]}</h6>
                       <p className="border rounded text-black-50">{consult.scheduled_time}</p>
-                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button" onClick={() => handleEnterMeet(consult)}>Entrar</button>
+                      {consult.confirmed ? 
+                          <>
+                            {consult.started_at !== null  ?
+                                <button className=" m-0 btn btn-sm btn-rounded btn-blue button" onClick={() => handleEnterMeet(consult)}>Entrar</button>
+                              :
+                                <button className=" m-0 btn btn-sm btn-rounded btn-blue button">Aguarde ser iniciada...</button>
+                            }
+                          </>
+                        :
+                          <button className=" m-0 btn btn-sm btn-rounded btn-blue button">Consulta não confirmada</button>
+                      }
                     </div>
                   </div>
 

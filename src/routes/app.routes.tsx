@@ -29,7 +29,6 @@ export default function AppRoutes() {
 
   function ScrollToTop() {
     const { pathname } = useLocation();
-    console.log(pathname)
 
     useEffect(() => {
       if(pathname === '/consulta/' + consultMeet?.id){

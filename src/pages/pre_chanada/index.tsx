@@ -13,7 +13,9 @@ export default function PreChamada() {
 
   function handleCreateMeet() {
 
-    if(consultMeet?.started_at !== null && consultMeet?.finished_at === null){
+    console.log(consultMeet?.finished_at)
+
+    if(consultMeet?.started_at !== null && (consultMeet?.finished_at === null || consultMeet?.finished_at === undefined) ){
       history.push('/consulta/' + consultMeet?.id)
     }
 

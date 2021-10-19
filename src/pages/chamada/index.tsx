@@ -5,7 +5,7 @@ import Switch from 'react-switch'
 import './index.css'
 
 import {FaVideo, FaMicrophone, FaArrowRight} from 'react-icons/fa'
-import {BiSend, BiPaperclip} from 'react-icons/bi'
+import {BiSend, BiPaperclip, BiChat} from 'react-icons/bi'
 import api from '../../services/api';
 import {useHistory} from 'react-router-dom'
 
@@ -19,14 +19,20 @@ export default function Chamada() {
   const [openMic, setOpenMic] = useState(false)
   const [message, setMessage] = useState('')
   const [modalShow, setModalShow] = useState(false)
+  const [openChat, setOpenChat] = useState(true)
 
   function handleFinishConsult(){
-    api.put('/consult/' + consultMeet?.id + '/finish', {}, {headers: {'Authorization': user?.id}}).then((response) => {
+    if(user?.is_medic){
+      api.put('/consult/' + consultMeet?.id + '/finish', {}, {headers: {'Authorization': user?.id}}).then((response) => {
+        removeConsultMeet();
+        history.push('/historico')
+      }).catch((err) => {
+        alert(err.response.data.message)
+      })
+    } else {
       removeConsultMeet();
       history.push('/historico')
-    }).catch((err) => {
-      alert(err.response.data.message)
-    })
+    }
   }
 
   return (
@@ -49,13 +55,17 @@ export default function Chamada() {
               </div>
             </div>
 
-            <button onClick={() => setModalShow(true)} className="btn btn-finish-consult">Encerrar</button>
+            <button onClick={() => setModalShow(true)} className="btn btn-finish-consult">{user?.is_medic ? 'Encerrar' : 'Sair'}</button>
           </div>
         </div>
 
-        <div className='messages-container'>
+        <button className='btn chat-btn' style={{display: !openChat ? 'flex' : 'none'}} onClick={() => setOpenChat(true)}>
+          <BiChat color='#0166DA' size={50}/>
+        </button>
+
+        <div className='messages-container' style={{display: openChat ? 'flex' : 'none'}}>
           <div className='chat-info-container'>
-            <button className="btn py-0">
+            <button className="btn py-0" onClick={() => setOpenChat(false)}>
               <FaArrowRight color='#0166DA' size={28}/>
             </button>
 
@@ -106,11 +116,16 @@ export default function Chamada() {
 
       <Modal size='sm' centered show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Body>
-          <p className='text-center mt-3'>Deseja mesmo encerrar a consulta?</p>
+          {user?.is_medic ?
+            <p className='text-center mt-3'>Deseja mesmo encerrar a consulta?</p>
+            :
+            <p className='text-center mt-3'>Deseja mesmo sair da consulta?</p>
+          }
+          
             
           <div className='modal-finish-consult-btns'>
             <button onClick={() => setModalShow(false)} className="btn modal-btn-cancel-finish-consult">Ficar</button>
-            <button onClick={handleFinishConsult} className="btn btn-finish-consult">Sair</button>
+            <button onClick={handleFinishConsult} className="btn btn-finish-consult">{user?.is_medic ? 'Encerrar' : 'Sair'}</button>
           </div>
         </Modal.Body>
       </Modal>
