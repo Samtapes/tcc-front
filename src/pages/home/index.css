@@ -93,3 +93,23 @@
 .modal-day-button:active{
   background-color: #0166da42;
 }
+
+.search-bar{
+  display: block;
+  width: 100%;
+  padding: .375rem 2.25rem .375rem .75rem;
+  -moz-padding-start: calc(0.75rem - 3px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #fff;
+  background-image: url('https://cdn-icons.flaticon.com/png/512/2811/premium/2811806.png?token=exp=1634783472~hmac=283beb00f1acedb5d3b3d082f48443c2');
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 20px 20px;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  -webkit-appearance: none;
+  appearance: none;
+}

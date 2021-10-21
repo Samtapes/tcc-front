@@ -76,12 +76,14 @@ width: 100%;
 }
 
 .container-camera {
-max-width: 600px!important;
-width: 100%;
+    max-width: 600px!important;
+    width: 100%;
     padding-right: var(--bs-gutter-x,.75rem);
     padding-left: var(--bs-gutter-x,.75rem);
     margin-right: auto;
     margin-left: auto;
+    display: flex;
+    justify-content: space-around;
 }
 
 .container-signup {
@@ -91,4 +93,12 @@ width: 100%;
     padding-left: var(--bs-gutter-x,.75rem);
     margin-right: auto;
     margin-left: auto;
+}
+
+.container-camera-icon{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: #1B1464;
+    height: 300px;
 }

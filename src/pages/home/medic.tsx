@@ -49,7 +49,7 @@ export default function Pendendetes() {
     <div className="mt-5">
       <div className="container-fluid tamanhoagendar gradient-custom py-5 my-5 m-0 ">
         <div className="text-light my-5 text-center">
-          <h1>Bem vindo, User!</h1>
+          <h1>Bem vindo, {user?.name}!</h1>
           <p>Pronto para realizar sua consulta?</p>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function Pendendetes() {
                       <h6>{consult.date[consult.date.length-2] + consult.date[consult.date.length-1]} de {months[parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1]}</h6>
                       <h6 className="text-black-50">{days[ new Date(2021, parseInt(consult.date[consult.date.length-5] + consult.date[consult.date.length-4])-1, parseInt(consult.date[consult.date.length-2] + consult.date[consult.date.length-1])-1).getDay()]}</h6>
                       <p className="border rounded text-black-50">{consult.scheduled_time}</p>
-                      <button className=" m-0 btn btn-sm btn-rounded btn-blue button" onClick={() => handleConfirmConsult(consult.id)}>Confirmar</button>
+                      <button className=" mb-2 btn btn-sm btn-rounded btn-blue button" onClick={() => handleConfirmConsult(consult.id)}>Confirmar</button>
                       <button className=" m-0 btn btn-sm btn-rounded btn-blue button">Trocar Horário</button>
                     </div>
                   </div>

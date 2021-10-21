@@ -46,7 +46,7 @@ export default function Consultas() {
     <div className="mt-5">
       <div className="container-fluid tamanhoagendar gradient-custom py-5 my-5 m-0 ">
         <div className="text-light my-5 text-center">
-          <h1>Bem vindo, User!</h1>
+          <h1>Bem vindo, {user?.name}!</h1>
           <p>Pronto para realizar sua consulta?</p>
         </div>
       </div>

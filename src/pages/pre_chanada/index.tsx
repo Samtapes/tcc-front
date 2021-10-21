@@ -1,6 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AuthContext from '../../contexts/auth';
 import './index.css'
+import {FaVideo, FaMicrophone} from 'react-icons/fa'
+import Switch from 'react-switch'
+
+
 
 import { useHistory } from 'react-router-dom';
 
@@ -11,10 +15,10 @@ export default function PreChamada() {
   const {consultMeet, user, removeConsultMeet} = useContext(AuthContext)
   const history = useHistory()
 
+  const [openCamera, setOpenCamera] = useState(false)
+  const [openMic, setOpenMic] = useState(false)
+
   function handleCreateMeet() {
-
-    console.log(consultMeet?.finished_at)
-
     if(consultMeet?.started_at !== null && (consultMeet?.finished_at === null || consultMeet?.finished_at === undefined) ){
       history.push('/consulta/' + consultMeet?.id)
     }
@@ -30,7 +34,6 @@ export default function PreChamada() {
     else {
       alert('Não é possível entrar em uma consulta já finalizada')
     }
-
   }
 
   function handleGoBack() {
@@ -39,24 +42,30 @@ export default function PreChamada() {
   }
 
   return(
-    <div className="container-fluid gradient-custom p-5 mt-5" style={{height:"100vh"}}>
+  <div className="container-fluid gradient-custom p-5" style={{height:"100vh"}}>
     <button onClick={handleGoBack} className="m-0 btn text-light">{'< Voltar'}</button>
     <h1 className="text-center text-light  px-5 mt-5">Consulta com {consultMeet?.name}</h1>
     <div className="container-camera text-right p-5 rounded my-5" style={{backgroundColor: '#1B1464'}} >
-      <div className="d-flex" style={{height: "300px", backgroundColor: '#1B1464', textAlign: 'center', justifyContent: 'center', alignContent: 'center'}}>
-        <BiVideoOff size={150} color='white'/>
+      <div className="container-camera-icon">
+        <BiVideoOff size={150} color='white' style={{alignSelf: 'center'}}/>
       </div>
     </div>
     <div className="container-camera text-right p-4 bg-light rounded my-5" >
-      <div className="row">
-        <div className="col-4 "><h5 className="">mutar</h5></div>
-        <div className="col-4 "><h5 className="">ligar camera</h5></div>
-        <div className="col-4 ">
-          <div className="text-end my-auto">
-            <button onClick={handleCreateMeet} className="m-0 btn btn-sm btn-rounded btn-blue button">Entrar</button>
-          </div>
+
+      <div className='d-flex'>
+        <div className='d-flex'>
+          <FaVideo className='mx-3' size={35} color={openCamera ? '#00EDBC' : '#EB4335'}/>
+          <Switch onChange={event => setOpenCamera(event)} checked={openCamera} onColor='#00EDBC' offColor='#EB4335' uncheckedIcon={false} checkedIcon={false}/>
+        </div>
+
+        <div className='d-flex mx-3'>
+          <FaMicrophone size={35} color={openMic ? '#00EDBC' : '#EB4335'}/>
+          <Switch onChange={event => setOpenMic(event)} checked={openMic} onColor='#00EDBC' offColor='#EB4335' uncheckedIcon={false} checkedIcon={false}/>
         </div>
       </div>
+
+      <button onClick={handleCreateMeet} className="m-0 btn btn-sm btn-rounded btn-blue button">Entrar</button>
+
     </div>
   </div>
   )

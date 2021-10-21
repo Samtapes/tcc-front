@@ -37,15 +37,15 @@ export default function Historico(){
   }, [user])
 
   return(
-    <div className="mt-5">
+    <div className="mt-5" >
       <div className="container-fluid tamanhoagendar gradient-custom py-5 my-5 m-0 ">
         <div className="text-light my-5 text-center">
-          <h1>Bem vindo, User!</h1>
+          <h1>Bem vindo, {user?.name}!</h1>
           <p>Pronto para realizar sua consulta?</p>
         </div>
       </div>
 
-      <div className="container py-5">
+      <div className="container py-5 mb-5">
         <div className="row">
           {consults.length >= 1 ? consults.map((consult: IConsult) => (
             <div className="col-lg-5 col-sm-12 my-4 shadow bg-light p-4 container   rounded border">
@@ -63,7 +63,7 @@ export default function Historico(){
                   </div>
 
                   <div className="text-center">
-                    <button className="  btn btn-sm btn-rounded btn-blue">Chat</button>
+                    <button className="button btn btn-sm btn-rounded btn-blue" style={{marginLeft: '15%'}}>Chat</button>
                   </div>
                 </div>
 

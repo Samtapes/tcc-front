@@ -47,7 +47,7 @@ function App() {
           <label className="form-label" >Senha</label>
 
         </div>
-          <div className="text-end pointer">
+          <div className="text-center pointer">
             <Link to="/"> Esqueceu a senha?</Link>
           </div>
 

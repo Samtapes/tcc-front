@@ -157,7 +157,7 @@ export default function Home() {
 
   const [time, setTime] = useState(getActualTime())
 
-  const {newConsult} = useContext(AuthContext)
+  const {newConsult, user} = useContext(AuthContext)
   
   const history = useHistory()
 
@@ -186,7 +186,7 @@ export default function Home() {
     <div className="mt-5">
       <div className="container-fluid tamanhoagendar gradient-custom py-5 my-5 m-0 ">
         <div className="text-light my-5 text-center">
-          <h1>Bem vindo, User!</h1>
+          <h1>Bem vindo, {user?.name}!</h1>
           <p>Pronto pra agendar sua consulta?</p>
         </div>
       </div>
@@ -201,6 +201,10 @@ export default function Home() {
                 <option key={specialization.id} value={specialization.name}>{specialization.name}</option>
               ))}
             </select>
+          </div>
+
+          <div className="col-8 px-4 my-auto">
+            <input className="search-bar text-black-50 bg-light " type="text"/>
           </div>
 
         </div>

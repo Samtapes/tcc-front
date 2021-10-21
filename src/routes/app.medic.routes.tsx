@@ -31,7 +31,7 @@ export default function AppMedicRoutes() {
     const { pathname } = useLocation();
 
     useEffect(() => {
-      if(pathname === '/consulta/' + consultMeet?.id){
+      if((pathname === '/consulta/' + consultMeet?.id || pathname === '/prechamada') && (consultMeet !== undefined && consultMeet !== null)){
         setShowNav(false)
       } else {
         setShowNav(true)

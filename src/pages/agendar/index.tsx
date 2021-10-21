@@ -21,7 +21,7 @@ export default function Agendar(){
 
   function handleSubmit() {
 
-    if(additionalInfo !== '' && phone !== ''){
+    if(phone !== ''){
       newConsult(consult?.medic, {date: consult?.consult.date, scheduled_time: consult?.consult.scheduled_time, additional_info: additionalInfo})
       history.push('/confirmar-agendamento')
     }

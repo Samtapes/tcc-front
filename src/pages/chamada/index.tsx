@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../contexts/auth';
 
 import Switch from 'react-switch'
@@ -11,16 +11,25 @@ import {useHistory} from 'react-router-dom'
 
 import Modal from 'react-bootstrap/Modal'
 
+
+interface IMessage {
+  id: string;
+  consult_id: string;
+  sender_id: string;
+  name: string;
+  text: string;
+}
+
 export default function Chamada() {
   const {consultMeet, user, removeConsultMeet} = useContext(AuthContext)
   const history = useHistory()
 
-  const [openCamera, setOpenCamera] = useState(false)
-  const [openMic, setOpenMic] = useState(false)
+  const [openCamera, setOpenCamera] = useState(true)
+  const [openMic, setOpenMic] = useState(true)
   const [message, setMessage] = useState('')
   const [modalShow, setModalShow] = useState(false)
   const [openChat, setOpenChat] = useState(true)
-
+  
   function handleFinishConsult(){
     if(user?.is_medic){
       api.put('/consult/' + consultMeet?.id + '/finish', {}, {headers: {'Authorization': user?.id}}).then((response) => {
@@ -34,6 +43,18 @@ export default function Chamada() {
       history.push('/historico')
     }
   }
+
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+
+  useEffect(() => {
+    api.get('/consult/' + consultMeet?.id + '/messages', {headers: {'Authorization': user?.id}}).then(response => {
+      setMessages(response.data)
+    }).catch(error => {
+      alert(error.response.data.message);
+    })
+  }, [consultMeet, user])
+
 
   return (
     <div className="container-fluid gradient-custom p-0">
@@ -60,7 +81,7 @@ export default function Chamada() {
         </div>
 
         <button className='btn chat-btn' style={{display: !openChat ? 'flex' : 'none'}} onClick={() => setOpenChat(true)}>
-          <BiChat color='#0166DA' size={50}/>
+          <BiChat color='#fff' size={50}/>
         </button>
 
         <div className='messages-container' style={{display: openChat ? 'flex' : 'none'}}>
@@ -74,29 +95,37 @@ export default function Chamada() {
 
           <div className='chat-messages-container'>
 
-            <div className='your-message'>
-              <div className='your-message-info'>
-                <p className='your-message-name'>Você</p>
-                <div className='your-message-image' style={{backgroundImage: 'url(' + user?.image_url + ')'}}/>
-              </div>
-              <p className='your-message-text'>Opa</p>
-            </div>
-
-            <div className='your-message'>
-              {/* <div className='your-message-info'>
-                <p className='your-message-name'>Você</p>
-                <div className='your-message-image' style={{backgroundImage: 'url(' + user?.image_url + ')'}}/>
-              </div> */}
-              <p className='your-message-text'>Está me ouvindo?</p>
-            </div>
-
-            <div className='other-message'>
-              <div className='other-message-info'>
-                <div className='other-message-image' style={{backgroundImage: 'url(' + consultMeet?.image_url + ')'}}/>
-                <p className='other-message-name'>{consultMeet?.name}</p>
-              </div>
-              <p className='other-message-text'>Sim</p>
-            </div>
+            {messages.map((message: IMessage, index: number) => (
+              <>
+              {message?.sender_id === user?.id ?
+                messages[index-1]?.sender_id === message.sender_id ?
+                  <div key={message.id} className='your-message'>
+                    <p className='your-message-text'>{message.text}</p>
+                  </div>
+                  :
+                  <div key={message.id} className='your-message'>
+                  <div className='your-message-info'>
+                    <p className='your-message-name'>Você</p>
+                    <div className='your-message-image' style={{backgroundImage: 'url(' + user?.image_url + ')'}}/>
+                  </div>
+                  <p className='your-message-text'>{message.text}</p>
+                  </div>
+                :
+                messages[index-1]?.sender_id === message.sender_id ?
+                  <div key={message.id} className='other-message'>
+                    <p className='other-message-text'>{message.text}</p>
+                  </div>
+                :
+                <div key={message.id} className='other-message'>
+                  <div className='other-message-info'>
+                    <p className='other-message-name'>{message.name}</p>
+                    <div className='other-message-image' style={{backgroundImage: 'url(' + consultMeet?.image_url + ')'}}/>
+                  </div>
+                 <p className='other-message-text'>{message.text}</p>
+                </div>
+              }
+              </>
+            ))}
 
           </div>
 
